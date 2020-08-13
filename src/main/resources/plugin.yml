@@ -1,3 +1,10 @@
 name: DiamondCurrencyShops
 main: be.garagepoort.diamondcurrencyshops.MainJavaPlugin
 version: 1.0-SNAPSHOT
+commands:
+  listDshops:
+    description: List all open shops
+    usage: /listDshops
+  createDshop:
+    description: Create a shop
+    usage: /createDshop [shopName]

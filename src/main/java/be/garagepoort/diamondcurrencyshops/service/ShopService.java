@@ -17,13 +17,13 @@ public class ShopService {
         return instance;
     }
 
-    public String createShop(Player player, String name) {
+    public String createShop(String name, Player owner) {
         Optional<Shop> existingShop = ShopRepository.getInstance().findShop(name);
         if(existingShop.isPresent()) {
             return "Cannot create the shop. A shop with this name already exists. Please choose another name.";
         }
-        Shop shop = new Shop();
-
+        Shop shop = new Shop(name, owner.getName());
+        ShopRepository.getInstance().saveShop(shop);
         return null;
     }
 }

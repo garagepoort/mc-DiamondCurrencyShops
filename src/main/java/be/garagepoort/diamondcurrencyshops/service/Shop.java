@@ -8,14 +8,28 @@ import org.bukkit.entity.Player;
 
 public class Shop {
 
+    private int id;
     private String name;
-    private Location location;
-    private Player player;
+    private String owner;
     private List<Chest> chests;
 
-    public Shop(String name, Location location, Player player) {
+    public Shop(int id, String name, String owner) {
+        this.id = id;
         this.name = name;
-        this.location = location;
-        this.player = player;
+        this.owner = owner;
     }
+
+    public Shop(String name, String owner) {
+        this.name = name;
+        this.owner = owner;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getOwner() {
+        return owner;
+    }
+
 }
