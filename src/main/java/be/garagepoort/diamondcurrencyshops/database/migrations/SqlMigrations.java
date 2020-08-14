@@ -1,4 +1,7 @@
-package be.garagepoort.diamondcurrencyshops.migrations;
+package be.garagepoort.diamondcurrencyshops.database.migrations;
+
+import be.garagepoort.diamondcurrencyshops.common.DLogger;
+import be.garagepoort.diamondcurrencyshops.database.SqlLiteConnection;
 
 import java.sql.*;
 import java.util.Arrays;
@@ -6,13 +9,13 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import be.garagepoort.diamondcurrencyshops.DLogger;
-import be.garagepoort.diamondcurrencyshops.database.SqlLiteConnection;
-
 public class SqlMigrations {
 
     private static SqlMigrations instance;
-    private static List<Migration> migrations = Arrays.asList(new CreateShopTableMigration());
+    private static List<Migration> migrations = Arrays.asList(
+            new CreateShopTableMigration(),
+            new CreateShopChestsTableMigration(),
+            new CreateShopItemsTableMigration());
 
     private SqlMigrations() {
     }

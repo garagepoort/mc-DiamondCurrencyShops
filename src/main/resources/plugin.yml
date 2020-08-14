@@ -1,6 +1,7 @@
 name: DiamondCurrencyShops
 main: be.garagepoort.diamondcurrencyshops.MainJavaPlugin
 version: 1.0-SNAPSHOT
+api-version: 1.16
 commands:
   listDshops:
     description: List all open shops
@@ -8,3 +9,9 @@ commands:
   createDshop:
     description: Create a shop
     usage: /createDshop [shopName]
+  addDchests:
+    description: Add the currently selected chest to the shop
+    usage: /addDchests [shopName]
+  addDitem:
+    description: Add an item to your shop. For example "/addDitem MyShop REDSTONE 3 64". This would sell 64 redstone for 3 diamonds.
+    usage: /addDitem [shopName] [material] [cost] [amount of items]

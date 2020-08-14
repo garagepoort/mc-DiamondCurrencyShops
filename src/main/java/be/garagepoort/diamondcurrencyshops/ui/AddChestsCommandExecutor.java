@@ -10,11 +10,11 @@ import org.bukkit.entity.Player;
 
 import static be.garagepoort.diamondcurrencyshops.common.CommandUtil.executeCommand;
 
-public class CreateShopCommandExecutor implements CommandExecutor {
+public class AddChestsCommandExecutor implements CommandExecutor {
 
     private MainJavaPlugin mainJavaPlugin;
 
-    public CreateShopCommandExecutor(MainJavaPlugin mainJavaPlugin) {
+    public AddChestsCommandExecutor(MainJavaPlugin mainJavaPlugin) {
         this.mainJavaPlugin = mainJavaPlugin;
     }
 
@@ -25,9 +25,9 @@ public class CreateShopCommandExecutor implements CommandExecutor {
                 throw new BusinessException("Shopname must be provided");
             }
 
-            if (sender instanceof Player) {
-                ShopService.getInstance().createShop(args[0], (Player) sender);
-                sender.sendMessage("Shop created");
+            if(sender instanceof Player){
+                ShopService.getInstance().addChestsToShop(args[0], (Player) sender);
+                sender.sendMessage("Chests successfully added to shop [" + args[0] + "]");
                 return true;
             }
             sender.sendMessage("You must be a player!");

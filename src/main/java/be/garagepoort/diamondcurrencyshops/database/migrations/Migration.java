@@ -1,4 +1,4 @@
-package be.garagepoort.diamondcurrencyshops.migrations;
+package be.garagepoort.diamondcurrencyshops.database.migrations;
 
 public interface Migration {
 

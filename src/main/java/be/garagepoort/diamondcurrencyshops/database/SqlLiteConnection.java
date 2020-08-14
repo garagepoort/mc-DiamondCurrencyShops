@@ -4,11 +4,6 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-import be.garagepoort.diamondcurrencyshops.DLogger;
-import org.bukkit.plugin.PluginLogger;
-
-import static be.garagepoort.diamondcurrencyshops.DLogger.logger;
-
 public class SqlLiteConnection {
 
     /**

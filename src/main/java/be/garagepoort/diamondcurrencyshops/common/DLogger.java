@@ -1,4 +1,4 @@
-package be.garagepoort.diamondcurrencyshops;
+package be.garagepoort.diamondcurrencyshops.common;
 
 
 import java.util.logging.Logger;
