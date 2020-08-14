@@ -2,6 +2,7 @@ package be.garagepoort.diamondcurrencyshops.service.shop;
 
 import be.garagepoort.diamondcurrencyshops.common.BusinessException;
 import be.garagepoort.diamondcurrencyshops.database.ShopChestRepository;
+import be.garagepoort.diamondcurrencyshops.database.ShopItemRepository;
 import be.garagepoort.diamondcurrencyshops.database.ShopRepository;
 import be.garagepoort.diamondcurrencyshops.service.chest.ChestSelector;
 import org.bukkit.entity.Player;
@@ -35,6 +36,14 @@ public class ShopService {
         }
         Shop shop = new Shop(name, owner.getUniqueId().toString(), owner.getName());
         ShopRepository.getInstance().saveShop(shop);
+    }
+
+    public void deleteShop(String name, Player owner) {
+        Shop existingShop = ShopRepository.getInstance().findShopForOwner(name, owner)
+                .orElseThrow(() -> new BusinessException("Cannot delete the shop. A shop with this name does not exist."));
+        ShopItemRepository.getInstance().deleteItems(existingShop);
+        ShopChestRepository.getInstance().deleteChests(existingShop);
+        ShopRepository.getInstance().deleteShop(existingShop);
     }
 
     public void addChestsToShop(String name, Player owner) {

@@ -15,3 +15,9 @@ commands:
   addDitem:
     description: Add an item to your shop. For example "/addDitem MyShop REDSTONE 3 64". This would sell 64 redstone for 3 diamonds.
     usage: /addDitem [shopName] [material] [cost] [amount of items]
+  removeDshop:
+    description: Removes your shop and unlinks all chests
+    usage: /removeDshop [shopName]
+  listDshopItems:
+    description: Removes your shop and unlinks all chests
+    usage: /removeDshop [shopName]

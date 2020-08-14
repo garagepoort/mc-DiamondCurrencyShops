@@ -1,5 +1,6 @@
 package be.garagepoort.diamondcurrencyshops.service.chest;
 
+import be.garagepoort.diamondcurrencyshops.common.BusinessException;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
@@ -17,25 +18,24 @@ public class SelectChestListener implements Listener {
 
     @EventHandler(priority = EventPriority.NORMAL)
     public void selectChestForShop(PlayerInteractEvent event) {
-        EquipmentSlot e = event.getHand();
-        if (Objects.equals(e, EquipmentSlot.HAND)) {
-            Block clickedBlock = event.getClickedBlock();
-            if (clickedBlock == null) {
-                return;
-            }
+        try {
+            EquipmentSlot e = event.getHand();
+            if (Objects.equals(e, EquipmentSlot.HAND)) {
+                Block clickedBlock = event.getClickedBlock();
+                if (clickedBlock == null) {
+                    return;
+                }
 
-            Player player = event.getPlayer();
-
-            ItemStack itemInMainHand = event.getPlayer().getInventory().getItemInMainHand();
-            if (itemInMainHand.getType() == Material.GOLDEN_HOE) {
-                if (clickedBlock.getType() == Material.CHEST) {
+                Player player = event.getPlayer();
+                ItemStack itemInMainHand = event.getPlayer().getInventory().getItemInMainHand();
+                if (itemInMainHand.getType() == Material.GOLDEN_HOE && clickedBlock.getType() == Material.CHEST) {
                     Chest chest = (Chest) clickedBlock.getState();
                     ChestSelector.getInstance().addOrRemoveChest(player, chest);
-
                     event.getPlayer().sendMessage("To finish adding chests to shop execute the command: \"/addDchests [shopname]\"");
-//                event.getPlayer().sendMessage("To Cancel unequip the golden hoe");
                 }
             }
+        } catch (BusinessException e) {
+            event.getPlayer().sendMessage(e.getMessage());
         }
     }
 

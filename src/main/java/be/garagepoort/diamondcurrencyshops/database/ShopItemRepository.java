@@ -9,6 +9,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 public class ShopItemRepository {
@@ -55,6 +57,38 @@ public class ShopItemRepository {
                 return Optional.empty();
             }
             return Optional.of(new ShopItem(rs.getInt(3), Material.getMaterial(rs.getString(2)), rs.getInt(3), rs.getInt(4)));
+        } catch (SQLException e) {
+            DLogger.logger.severe(e.getMessage());
+        }
+        return null;
+    }
+
+    public void deleteItems(Shop shop) {
+        String sql = "DELETE FROM shop_items WHERE shop_id = ?;";
+
+        try (Connection conn = SqlLiteConnection.connect();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, shop.getId());
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            DLogger.logger.severe(e.getMessage());
+        }
+    }
+
+    public List<ShopItem> getItemsForShop(Shop shop) {
+        String sql = "SELECT id, material, cost, amount_of_items FROM shop_items WHERE shop_id = ?;";
+
+        try (Connection conn = SqlLiteConnection.connect();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, shop.getId());
+
+            ResultSet rs = pstmt.executeQuery();
+
+            List<ShopItem> result = new ArrayList<>();
+            while(rs.next()) {
+                result.add(new ShopItem(rs.getInt(3), Material.getMaterial(rs.getString(2)), rs.getInt(3), rs.getInt(4)));
+            }
+            return result;
         } catch (SQLException e) {
             DLogger.logger.severe(e.getMessage());
         }

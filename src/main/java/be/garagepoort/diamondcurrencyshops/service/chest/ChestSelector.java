@@ -1,14 +1,15 @@
 package be.garagepoort.diamondcurrencyshops.service.chest;
 
+import be.garagepoort.diamondcurrencyshops.common.BusinessException;
+import be.garagepoort.diamondcurrencyshops.database.ShopChestRepository;
+import be.garagepoort.diamondcurrencyshops.service.shop.Shop;
+import be.garagepoort.diamondcurrencyshops.service.shop.ShopService;
 import com.google.common.collect.Lists;
 import org.bukkit.Location;
 import org.bukkit.block.Chest;
 import org.bukkit.entity.Player;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 public class ChestSelector {
 
@@ -29,6 +30,7 @@ public class ChestSelector {
         if (!selectedChests.containsKey(player.getUniqueId())) {
             selectedChests.put(player.getUniqueId(), Lists.newArrayList());
         }
+        validateChest(player, chest);
 
         List<Location> chests = selectedChests.get(player.getUniqueId());
         if (chests.stream().anyMatch(c -> c.equals(chest.getLocation()))) {
@@ -41,7 +43,7 @@ public class ChestSelector {
     }
 
     public static List<Location> getSelectedChestLocations(Player player) {
-        if(!selectedChests.containsKey(player.getUniqueId())) {
+        if (!selectedChests.containsKey(player.getUniqueId())) {
             return Collections.emptyList();
         }
         return selectedChests.get(player.getUniqueId());
@@ -51,5 +53,14 @@ public class ChestSelector {
         selectedChests.remove(player.getUniqueId());
     }
 
+    private void validateChest(Player player, Chest chest) {
+        Optional<ShopChest> shopChest = ShopChestRepository.getInstance().getChestByLocation(chest.getLocation());
+        if (shopChest.isPresent()) {
+            Shop shop = ShopService.getInstance().getShop(shopChest.get().getShopId());
+            if (!shop.getOwnerId().equals(player.getUniqueId().toString())) {
+                throw new BusinessException("This chest belongs to another shop");
+            }
+        }
+    }
 
 }

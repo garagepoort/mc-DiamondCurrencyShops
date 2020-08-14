@@ -117,4 +117,15 @@ public class ShopRepository {
         return null;
     }
 
+    public void deleteShop(Shop shop) {
+        String sql = "DELETE FROM shops WHERE id = ?;";
+
+        try (Connection conn = SqlLiteConnection.connect();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, shop.getId());
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            DLogger.logger.severe(e.getMessage());
+        }
+    }
 }

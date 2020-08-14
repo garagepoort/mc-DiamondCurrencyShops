@@ -19,10 +19,11 @@ public class ShopChestRepository {
 
     private static ShopChestRepository instance;
 
-    private ShopChestRepository() {}
+    private ShopChestRepository() {
+    }
 
     public static ShopChestRepository getInstance() {
-        if(instance == null) {
+        if (instance == null) {
             instance = new ShopChestRepository();
         }
         return instance;
@@ -55,9 +56,9 @@ public class ShopChestRepository {
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setInt(1, shop.getId());
 
-            ResultSet rs  = pstmt.executeQuery();
+            ResultSet rs = pstmt.executeQuery();
             List<Location> result = new ArrayList<>();
-            while(rs.next()) {
+            while (rs.next()) {
                 result.add(new Location(Bukkit.getWorld(UUID.fromString(rs.getString(4))), rs.getDouble(1), rs.getDouble(2), rs.getDouble(3)));
             }
             return result;
@@ -77,10 +78,10 @@ public class ShopChestRepository {
             pstmt.setInt(3, location.getBlockZ());
             pstmt.setString(4, location.getWorld().getUID().toString());
 
-            ResultSet rs  = pstmt.executeQuery();
+            ResultSet rs = pstmt.executeQuery();
 
             boolean first = rs.next();
-            if(!first) {
+            if (!first) {
                 return Optional.empty();
             }
             Location chestLocation = new Location(Bukkit.getWorld(UUID.fromString(rs.getString(6))), rs.getDouble(3), rs.getDouble(4), rs.getDouble(5));
@@ -90,5 +91,17 @@ public class ShopChestRepository {
             DLogger.logger.severe(e.getMessage());
         }
         return null;
+    }
+
+    public void deleteChests(Shop shop) {
+        String sql = "DELETE FROM shop_chests WHERE shop_id = ?;";
+
+        try (Connection conn = SqlLiteConnection.connect();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, shop.getId());
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            DLogger.logger.severe(e.getMessage());
+        }
     }
 }
